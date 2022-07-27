@@ -54,6 +54,7 @@ module.exports.updateUser = async (req, res) => {
   try {
     const { name, about } = req.body;
     const user = await User.findByIdAndUpdate(
+      // eslint-disable-next-line no-underscore-dangle
       req.user._id,
       { name, about },
       { new: true, runValidators: true },
@@ -80,6 +81,7 @@ module.exports.updateUserAvatar = async (req, res) => {
   try {
     const { avatar } = req.body;
     const user = await User.findByIdAndUpdate(
+      // eslint-disable-next-line no-underscore-dangle
       req.user._id,
       { avatar },
       { new: true, runValidators: true },
