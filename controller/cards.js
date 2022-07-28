@@ -20,7 +20,7 @@ module.exports.createCard = async (req, res) => {
   } catch (err) {
     if (err.name === 'ValidationError') {
       return res.status(statusCodes.BAD_REQUEST).send({
-        message: 'Переданы некорректные данные при создании карточки',
+        message: 'Переданы некорректные данные',
       });
     }
     return res
@@ -65,7 +65,7 @@ module.exports.likeCard = async (req, res) => {
   } catch (err) {
     if (err.name === 'CastError') {
       return res.status(statusCodes.BAD_REQUEST).send({
-        message: 'Переданы некорректные данные для постановки лайка',
+        message: 'Переданы некорректные данные',
       });
     }
     return res
@@ -90,7 +90,7 @@ module.exports.deleteLikeCard = async (req, res) => {
   } catch (err) {
     if (err.name === 'CastError') {
       return res.status(statusCodes.BAD_REQUEST).send({
-        message: ' Переданы некорректные данные',
+        message: 'Переданы некорректные данные',
       });
     }
     return res
