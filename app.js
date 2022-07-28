@@ -32,7 +32,7 @@ app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
 app.use((req, res) => {
-  res.status(statusCodes.NOT_FOUND).send({ messge: 'Такой страницы не существует' });
+  res.status(statusCodes.NOT_FOUND).send({ message: 'Такой страницы не существует' });
 });
 
 app.listen(PORT, () => {
