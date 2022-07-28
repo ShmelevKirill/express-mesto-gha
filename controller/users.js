@@ -41,7 +41,7 @@ module.exports.createUser = async (req, res) => {
   } catch (err) {
     if (err.name === 'ValidationError') {
       return res.status(statusCodes.BAD_REQUEST).send({
-        message: 'Переданы некорректные имя, описание или аватар',
+        message: 'Переданы некорректные данные при создании пользователя',
       });
     }
     return res
@@ -67,7 +67,7 @@ module.exports.updateUser = async (req, res) => {
   } catch (err) {
     if (err.name === 'ValidationError') {
       return res.status(statusCodes.BAD_REQUEST).send({
-        message: 'Переданы некорректные имя или описание',
+        message: 'Переданы некорректные данные при создании пользователя',
       });
     }
     return res
@@ -93,7 +93,7 @@ module.exports.updateUserAvatar = async (req, res) => {
   } catch (err) {
     if (err.name === 'ValidationError') {
       return res.status(statusCodes.BAD_REQUEST).send({
-        message: 'Переданы некорректные данные при обновлении аватара',
+        message: 'Переданы некорректные данные',
       });
     }
     return res

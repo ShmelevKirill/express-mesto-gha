@@ -90,7 +90,7 @@ module.exports.deleteLikeCard = async (req, res) => {
   } catch (err) {
     if (err.name === 'CastError') {
       return res.status(statusCodes.BAD_REQUEST).send({
-        message: ' Переданы некорректные данные для снятии лайка',
+        message: ' Переданы некорректные данные',
       });
     }
     return res
