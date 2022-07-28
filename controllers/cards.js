@@ -3,7 +3,7 @@ const statusCodes = require('../utils/constants');
 
 module.exports.getCards = async (req, res) => {
   try {
-    const cards = await Card.find({}).populate(['owner', 'likes']);
+    const cards = await Card.find({});
     return res.send(cards);
   } catch (err) {
     return res
@@ -55,7 +55,7 @@ module.exports.likeCard = async (req, res) => {
       req.params.cardId,
       { $addToSet: { likes: req.user._id } },
       { new: true },
-    ).populate(['owner', 'likes']);
+    );
     if (!card) {
       return res
         .status(statusCodes.NOT_FOUND)
@@ -80,7 +80,7 @@ module.exports.deleteLikeCard = async (req, res) => {
       req.params.cardId,
       { $pull: { likes: req.user._id } },
       { new: true },
-    ).populate(['owner', 'likes']);
+    );
     if (!card) {
       return res
         .status(statusCodes.NOT_FOUND)
