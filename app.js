@@ -1,13 +1,25 @@
 /* eslint-disable no-console */
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const statusCodes = require('./utils/constants');
+const { errors } = require('celebrate');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const { DEFAULT } = require('./utils/constants');
+const router = require('./routes');
 
 const { PORT = 3000 } = process.env;
 
 const app = express();
 
-app.use(express.json());
+app.use(helmet());
+
+const limit = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+});
+
+app.use(limit);
 
 mongoose
   .connect('mongodb://localhost:27017/mestodb', {
@@ -20,21 +32,18 @@ mongoose
     console.log('Error to db connection');
   });
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '62e15dc9f7c815f773fc0106',
-  };
+app.use(router);
 
+app.use(errors());
+
+app.use((err, req, res, next) => {
+  const { statusCode = DEFAULT, message } = err;
+  res.status(statusCode).send({
+    message: statusCode === DEFAULT ? 'На сервере произошла ошибка' : message,
+  });
   next();
 });
 
-app.use('/users', require('./routes/users'));
-app.use('/cards', require('./routes/cards'));
-
-app.use((req, res) => {
-  res.status(statusCodes.NOT_FOUND).send({ message: 'Такой страницы не существует' });
-});
-
 app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
+  console.log(`Server listen on ${PORT}`);
 });
