@@ -36,8 +36,8 @@ module.exports.createCard = async (req, res, next) => {
 
 module.exports.deleteCard = async (req, res, next) => {
   try {
-    const card = await Card.findById(req.params.cardId);
-    orFail(new NotFoundError('Карточка не найдена'));
+    const card = await Card.findById(req.params.cardId)
+      .orFail(new NotFoundError('Карточка не найдена'));
     if (!card.owner.equals(req.user._id)) {
       throw new ForbiddenError('Нельзя удалить карточку, добавленную не вами');
     }
