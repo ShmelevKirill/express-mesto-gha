@@ -10,7 +10,7 @@ const {
 
 module.exports.getCards = async (req, res, next) => {
   try {
-    const cards = await Card.find({}).populate(['owner', 'likes']);
+    const cards = await Card.find({});
     return res.send(cards);
   } catch (err) {
     next(err);
@@ -54,7 +54,7 @@ module.exports.likeCard = async (req, res, next) => {
       req.params.cardId,
       { $addToSet: { likes: req.user._id } },
       { new: true },
-    ).populate(['owner', 'likes'])
+    )
       .orFail(new NotFoundError('Карточка не найдена'));
     return res.send(card);
   } catch (err) {
@@ -73,7 +73,7 @@ module.exports.deleteLikeCard = async (req, res, next) => {
       req.params.cardId,
       { $pull: { likes: req.user._id } },
       { new: true },
-    ).populate(['owner', 'likes'])
+    )
       .orFail(new NotFoundError('Карточка не найдена'));
     return res.send(card);
   } catch (err) {
