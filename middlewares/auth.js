@@ -2,7 +2,7 @@
 // eslint-disable-next-line import/no-unresolved
 const jwt = require('jsonwebtoken');
 
-const { JWT_SECRET = 'dev-key' } = process.env;
+const { NODE_ENV, JWT_SECRET = 'dev-key' } = process.env;
 const { UnauthorizedError } = require('../errors/errors');
 
 module.exports = (req, res, next) => {
@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
     let payload;
 
     try {
-      payload = jwt.verify(token, JWT_SECRET);
+      payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-key');
     } catch (err) {
       throw new UnauthorizedError('Необходима авторизация');
     }

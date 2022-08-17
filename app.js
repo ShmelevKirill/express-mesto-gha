@@ -5,12 +5,15 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { DEFAULT } = require('./utils/constants');
 const router = require('./routes');
 
 const { PORT = 3000 } = process.env;
 
 const app = express();
+
+app.use(requestLogger);
 
 app.use(helmet());
 
@@ -32,7 +35,15 @@ mongoose
     console.log('Error to db connection');
   });
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер не отвечает');
+  }, 0);
+});
+
 app.use(router);
+
+app.use(errorLogger);
 
 app.use(errors());
 
